@@ -12,7 +12,7 @@ void returning::operator=(char n){*(returning2<char>*)this=n;}
 void returning::operator=(string n){*(returning2<string>*)this=n;}
 
 template <typename T>
-returning2<T>::returning2(T &num,const pylist &list, int index, string s){
+returning2<T>::returning2(T &num,const PyList &list, int index, string s){
     n=&num;
     mod=list;
     type=s;
@@ -23,7 +23,7 @@ template<typename T>
 template<typename K>
 returning2<T>::returning2(const returning2<K> &other){
     this->type=other.type;
-    this->pylist=other.pylist;
+    this->PyList=other.PyList;
     this->n=other.n;
     this->index=other.index;
 }
@@ -40,16 +40,16 @@ void returning2<T>::operator=(K num){
     mod.modify(index,*(T*)n);
 }
 
-void returning::operator=(pylist &p){
-    *(returning2<pylist>*)this=p;
+void returning::operator=(PyList &p){
+    *(returning2<PyList>*)this=p;
 }
 
-pylist::pylist(){
+PyList::PyList(){
     size = 0;
     arr = new pair<string, void*>[size];
 }
 
-pylist::pylist(const pylist &other) {
+PyList::PyList(const PyList &other) {
     this->size = other.size;
     this->arr = new pair<string, void*>[size];
     for (int i = 0; i < size; i++) {
@@ -57,35 +57,35 @@ pylist::pylist(const pylist &other) {
     }
 }
 
-pair<string, int*> pylist::make_pair(int &n){
+pair<string, int*> PyList::make_pair(int &n){
     return pair<string, int*>("int", &n);
 }
 
-pair<string, float*> pylist::make_pair(float &n) {
+pair<string, float*> PyList::make_pair(float &n) {
     return pair<string, float*>("float", &n);
 }
 
-pair<string, double*> pylist::make_pair(double &n){
+pair<string, double*> PyList::make_pair(double &n){
     return pair<string,double*>("double",&n);
 }
 
-pair<string, bool*> pylist::make_pair(bool &n){
+pair<string, bool*> PyList::make_pair(bool &n){
     return pair<string,bool*>("bool",&n);
 }
 
-pair<string, string*> pylist::make_pair(string &n){
+pair<string, string*> PyList::make_pair(string &n){
     return pair<string,string*>("string",&n);
 }
 
-pair<string, char*> pylist::make_pair(char &n){
+pair<string, char*> PyList::make_pair(char &n){
     return pair<string,char*>("char",&n);
 }
 
-pair<string, pylist*> pylist::make_pair(pylist &n){
-    return pair<string,pylist*>("pylist",&n);
+pair<string, PyList*> PyList::make_pair(PyList &n){
+    return pair<string,PyList*>("PyList",&n);
 }
 
-void pylist::append(const char *a){
+void PyList::append(const char *a){
     string s1=a;
     string *s2=new string(s1);
     size++;
@@ -99,8 +99,8 @@ void pylist::append(const char *a){
     temp=nullptr;
 }
 
-void pylist::append(const pylist l){
-    pylist *l2=new pylist(l);
+void PyList::append(const PyList l){
+    PyList *l2=new PyList(l);
     size++;
     pair<string,void*> *temp=new pair<string,void*>[size];
     for(int i=0;i<size-1;i++){
@@ -112,8 +112,8 @@ void pylist::append(const pylist l){
     temp=nullptr;
 }
 
-pylist pylist::from_to(int i, int j){
-    pylist l;
+PyList PyList::from_to(int i, int j){
+    PyList l;
     delete[] l.arr;
     l.size=j-i+1;
     l.arr=new pair<string,void*>[l.size];
@@ -123,7 +123,7 @@ pylist pylist::from_to(int i, int j){
     return l;
 }
 
-returning *pylist::operator[](int n){
+returning *PyList::operator[](int n){
     if(arr[n].first=="int"){
         return new returning2<int>(*(int*)(arr[n].second),*this,n,"int");
     }
@@ -143,11 +143,11 @@ returning *pylist::operator[](int n){
         return new returning2<char>(*(char*)(arr[n].second),*this,n,"char");
     }
     else{
-        return new returning2<pylist>(*(pylist*)(arr[n].second),*this,n,"pylist");
+        return new returning2<PyList>(*(PyList*)(arr[n].second),*this,n,"PyList");
     }
 }
 
-ostream &operator<<(ostream &out,pylist l){
+ostream &operator<<(ostream &out,PyList l){
     out<<"[";
     for(int i=0;i<l.size;i++){
         if(l.arr[i].first=="int"){
@@ -169,7 +169,7 @@ ostream &operator<<(ostream &out,pylist l){
             out<<"'"<<*(char*)(l.arr[i].second)<<"'";
         }
         else{
-            out<<*(pylist*)(l.arr[i].second);
+            out<<*(PyList*)(l.arr[i].second);
         }
         if(i!=l.size-1) out<<",";
     }
@@ -177,6 +177,6 @@ ostream &operator<<(ostream &out,pylist l){
     return out;
 }
 
-int len(pylist l){
+int len(PyList l){
     return l.size;
 }
