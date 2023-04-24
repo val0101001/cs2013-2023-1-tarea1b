@@ -61,7 +61,7 @@ int main(){
 
     string s2=*l[3];
     cout<<s2<<endl;
-    pylist l4=*l[0];
+    PyList l4=*l[0];
     cout<<l3;
 
     // gracias por su tiempo profe, espero tome en cuenta que el programa basicamente funciona como pedido
