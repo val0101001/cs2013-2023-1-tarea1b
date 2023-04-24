@@ -9,7 +9,7 @@ int main(){
 
     // 1. la sobrecarga a [] no funciona si no usas * para derreferenciarlo
 
-    pylist l(1,'2',true,"abc");
+    PyList l(1,'2',true,"abc");
     auto a=l[0];
     cout<<l[0]<<endl; //va a imprimir una direccion
     cout<<(int)*l[0]<<endl; //no puede ser impreso si no se usa un type cast
@@ -26,12 +26,12 @@ int main(){
     string s=*l[3];
     cout<<s<<endl; // si imprime correctamente, solo pasa con type casting
 
-    // algo similar ocurre con pylist
+    // algo similar ocurre con PyList
 
-    pylist l2(1,2);
+    PyList l2(1,2);
     l.append(l2); // l=[1,'2',true,"abc",[1,2]]
-    // cout<<static_cast<pylist>(*l[4]); (no se por que pasa exactamente, pero se evita de la misma forma)
-    pylist l3=*l[4];
+    // cout<<static_cast<PyList>(*l[4]); (no se por que pasa exactamente, pero se evita de la misma forma)
+    PyList l3=*l[4];
     cout<<l3<<endl;
 
     // el tipo de retorno de [] no es el tipo, sino otro tipo, y es por eso que ocurren
