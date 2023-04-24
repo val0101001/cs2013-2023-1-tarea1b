@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-class pylist;
+class PyList;
 
 template<typename T>
 class returning2;
@@ -18,10 +18,10 @@ public:
     virtual void operator=(bool n);
     virtual void operator=(char n);
     virtual void operator=(string n);
-    void operator=(pylist &p);
+    void operator=(PyList &p);
 };
 
-class pylist{
+class PyList{
 private:
     pair<string,void*> *arr=nullptr;
     int size;
@@ -31,44 +31,44 @@ private:
     pair<string,bool*> make_pair(bool &n);
     pair<string,string*> make_pair(string &n);
     pair<string,char*> make_pair(char &n);
-    pair<string,pylist*> make_pair(pylist &n);
+    pair<string,PyList*> make_pair(PyList &n);
     template<typename ...Args>
     void append_many(Args ...args){
         (append(args),...);
     }
 public:
-    pylist();
+    PyList();
     template<typename ...Args>
-    explicit pylist(Args... args){
+    explicit PyList(Args... args){
         size=0;
         append_many(args...);
     }
-    pylist(const pylist &other);
+    PyList(const PyList &other);
     void append(const char *a);
-    void append(const pylist l);
+    void append(const PyList l);
     template<typename T>
     void append(T &a);
     template<typename T>
     void append(const T &&a);
     returning *operator[](int n);
-    friend ostream &operator<<(ostream&,pylist);
-    friend int len(pylist);
+    friend ostream &operator<<(ostream&,PyList);
+    friend int len(PyList);
     template<typename T>
     void modify(int index,T &val);
-    pylist from_to(int i,int j);
+    PyList from_to(int i,int j);
 };
 
-ostream &operator<<(ostream &out,pylist l);
-int len(pylist l);
+ostream &operator<<(ostream &out,PyList l);
+int len(PyList l);
 
 template <typename T>
 class returning2 : public returning {
 public:
     string type="";
-    pylist mod;
+    PyList mod;
     void *n;
     int index;
-    returning2(T &num,const pylist &list,int index,string s);
+    returning2(T &num,const PyList &list,int index,string s);
     operator T();
     template<typename K>
     void operator=(K num);
@@ -82,7 +82,7 @@ returning::operator T() const{
 }
 
 template<typename T>
-void pylist::append(T &a){
+void PyList::append(T &a){
     T *t=new T(a);
     size++;
     pair<string,void*> *temp=new pair<string,void*>[size];
@@ -96,7 +96,7 @@ void pylist::append(T &a){
 }
 
 template<typename T>
-void pylist::append(const T &&a){
+void PyList::append(const T &&a){
     T *t=new T(a);
     size++;
     pair<string,void*> *temp=new pair<string,void*>[size];
@@ -115,7 +115,7 @@ T no_ptr(T *n){
 }
 
 template <typename T>
-void pylist::modify(int index,T &val){
+void PyList::modify(int index,T &val){
     arr[index]=make_pair(val);
 }
 
